@@ -42,6 +42,11 @@ function editArticle(id, newArticle, cb) {
 }
 
 function getArticleByQuery(query, fields ,opt, cb) {
+    //查询字段不为空并且是数组 就转化一下子 因为
+    //新的mongoose就是这么搞的不然会报错
+    if ( fields && ('Array' == fields.constructor.name) ) {
+        fields = null;
+    }
     Article.find(query, fields, opt, function(err, articles) {
         if (err) {
             return cb(err); 
@@ -85,6 +90,8 @@ function getNeighborArticle(id, cb) {
  * 获取blog列表
  */
 exports.list = function(req, res, next) {
+    //XXX: 新版的mongoose很不够意思，fields传入空的[]，
+    //也会报错！！
     getArticleByQuery({}, [], {sort: {'createTime': -1}}, function(err, articles) {
         if (err) {
             return next(err);   

@@ -25,7 +25,7 @@ function addComment(newComment, cb) {
 }
 
 function getCommentsByArticleId(id, cb) {
-    Comment.find({'articleId': id}, [], {sort: {'createTime': 'asc'}}, function(err, list) {
+    Comment.find({'articleId': id}, null, {sort: {'createTime': 'asc'}}, function(err, list) {
         if (err) {
             cb(err);
         }
